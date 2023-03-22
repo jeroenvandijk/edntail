@@ -4,12 +4,15 @@
 
 
 (def cli-opts
-  {:alias {:F :Follow
+  {:coerce {:Follow :boolean
+            :follow :boolean}
+   :alias {:F :Follow
            :f :follow}})
 
 
-(defn -main [& args]
-  (api/tail (:opts (cli/parse-args args cli-opts))))
+(defn -main [& cli-args]
+  (let [{:keys [opts args]} (cli/parse-args cli-args cli-opts)]
+    (api/tail (assoc opts :file (first args)))))
 
 
 #?(:bb
