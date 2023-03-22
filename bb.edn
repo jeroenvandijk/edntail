@@ -1,0 +1,6 @@
+{:deps {deps/local {:local/root "."}}
+
+ :tasks {}
+
+ :bbin/bin {edntail {:main-opts ["-f" "src/jeroenvandijk/edntail/cli.clj"]}}
+}
