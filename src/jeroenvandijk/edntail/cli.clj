@@ -11,7 +11,7 @@
 
 (defn -main [& cli-args]
   (let [{:keys [opts args]} (cli/parse-args cli-args cli-opts)]
-    (api/tail (assoc opts :file (first args)))))
+    (api/tail (merge {:file (first args)} opts))))
 
 
 #?(:bb
