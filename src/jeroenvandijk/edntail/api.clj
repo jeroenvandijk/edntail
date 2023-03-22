@@ -17,12 +17,26 @@
       (cons edn-val (lazy-seq (edn-seq rdr))))))
 
 
-(defn tail-file->reader [file {:keys [follow Follow]}]
+(def tail-opts
+  [:f :F :n])
+
+
+(defn tail-file->reader [file opts]
   (if (.exists (io/file file))
-    (java.io.PushbackReader. (io/reader (:out (apply process {:err :inherit}
-                                                     (concat ["tail"] (cond
-                                                                        Follow ["-F"]
-                                                                        follow ["-f"]) [file])))))
+    (let [cmd (concat ["tail"]
+                      (into []
+                            (comp
+                             (keep (fn [k]
+                                     (when-let [v (get opts k)]
+                                       (if (boolean? v)
+                                         [(str "-" (name k))]
+
+                                         [(str "-" (name k)) (str v)]))))
+                             cat)
+                            tail-opts)
+                      [file])]
+      (java.io.PushbackReader. (io/reader (:out (apply process {:err :inherit}
+                                                       cmd)))))
     (throw (ex-info "File does not exist" {:babashka/exit 1}))))
 
 
@@ -41,7 +55,7 @@
   (let [rdr (cond
               (.ready *in*) *in*
 
-              file (tail-file->reader file (select-keys args [:follow :Follow]))
+              file (tail-file->reader file (select-keys args tail-opts))
 
               :else
               (throw (ex-info "No input given" {:babashka/exit 1})))

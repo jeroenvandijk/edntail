@@ -4,10 +4,9 @@
 
 
 (def cli-opts
-  {:coerce {:Follow :boolean
-            :follow :boolean}
-   :alias {:F :Follow
-           :f :follow}})
+  {:coerce {:F :boolean
+            :f :boolean
+            :n :long}})
 
 
 (defn -main [& cli-args]

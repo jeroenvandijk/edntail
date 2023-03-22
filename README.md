@@ -5,7 +5,7 @@ Tail EDN files
 ## Usage
 
 ```
-edntail --file tmp/development.log
+edntail -F -n 100 tmp/development.log
 ```
 
 ## Installation
