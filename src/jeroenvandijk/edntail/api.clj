@@ -37,7 +37,7 @@
   ((requiring-resolve 'jeroenvandijk.edntail.impl.query/query-transform) query))
 
 
-(defn tail [{:keys [file query transform template]}]
+(defn tail [{:keys [file query transform template] :as args}]
   (let [rdr (cond
               (.ready *in*) *in*
 
