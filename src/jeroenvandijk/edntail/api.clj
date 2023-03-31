@@ -53,12 +53,13 @@
 
 (defn tail [{:keys [file query transform template] :as args}]
   (let [rdr (cond
-              (.ready *in*) *in*
-
               file (tail-file->reader file (select-keys args tail-opts))
 
+              (.ready *in*) *in*
+
               :else
-              (throw (ex-info "No input given" {:babashka/exit 1})))
+              (do (println "INFO: stdin not ready, maybe waiting for input")
+                  *in*))
 
         output-fn
         (cond
