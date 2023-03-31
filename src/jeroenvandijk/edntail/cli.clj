@@ -11,6 +11,9 @@
 
 (defn -main [& cli-args]
   (let [{:keys [opts args]} (cli/parse-args cli-args cli-opts)]
+    (when-let [unused-args (seq (if (:file opts) args (rest args)))]
+      (println "WARN: unused args" (clojure.string/join " " unused-args)))
+
     (api/tail (merge {:file (first args)} opts))))
 
 
