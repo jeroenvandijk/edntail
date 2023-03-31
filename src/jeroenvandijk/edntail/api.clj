@@ -40,11 +40,9 @@
     (throw (ex-info "File does not exist" {:babashka/exit 1}))))
 
 
-(defn template->output-fn [template]
-  (let [render (requiring-resolve 'selmer.parser/render)]
-    (fn [x]
-      ;; REVIEW can this be optimized by preprocessing? https://github.com/yogthos/Selmer/blob/master/src/selmer/template_parser.clj
-      (println (render template x)))))
+(let [*f (delay (requiring-resolve 'jeroenvandijk.edntail.impl.template/template->output-fn))]
+  (defn template->output-fn [template]
+    (@*f template)))
 
 
 (defn query->transform-fn [query]
