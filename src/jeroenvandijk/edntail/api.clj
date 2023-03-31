@@ -68,8 +68,13 @@
             (puget/cprint x)
             (println)))
 
-        tranform-xf (cond
+        transform-xf (cond
                       query (query->transform-fn query)
-                      :default identity)]
-    (doseq [row (sequence tranform-xf (edn-seq rdr))]
-      (output-fn row))))
+
+                      :default (comp))]
+    ;; We shouldn't use doseq as it will appy batching
+    ;; and doesn't eagerly consume the sequence
+    (transduce transform-xf
+               (fn [_ row] (output-fn row))
+               identity
+               (edn-seq rdr))))
