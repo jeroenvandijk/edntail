@@ -74,6 +74,8 @@
     ;; We shouldn't use doseq as it will appy batching
     ;; and doesn't eagerly consume the sequence
     (transduce transform-xf
-               (fn [_ row] (output-fn row))
-               identity
+               (fn f
+                 ([])
+                 ([_])
+                 ([_ row] (output-fn row)))
                (edn-seq rdr))))
