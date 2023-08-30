@@ -1,0 +1,4 @@
+{:patsh ["src"]
+ :deps {mvxcvi/puget {:mvn/version "1.3.4"}
+        clojure-term-colors/clojure-term-colors {:mvn/version "0.1.0"}
+ }}
